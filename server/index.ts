@@ -16,67 +16,61 @@ AWS.config.update({
     accessKeyId: accessKey,
     secretAccessKey: secretKey,
     region: 'us-east-1',
-})
+});
 
 const s3 = new AWS.S3();
 
+//Home route
 app.get("/", (req:Request, res:Response) => {
-    res.send("Welcome to the Intern server");
+    res.send("Welcome to the intern server!");
 });
 
+//Get specific data from "Key"
 app.get("/item/:id", async(req:Request, res:Response) => {
     try{
         const params ={
             Bucket: 'gk-heimdall-logs',
             Key: req.params.id,
         };
-        
+
         const data = await s3.getObject(params).promise();
 
         if(data.Body){
             const jsonObject= JSON.parse(data.Body?.toString());
             res.send(jsonObject);
         } else {
-            res.send("Error from AWS")
-        }
-
-        /* We have nested list of JSON objects
+            res.send("Error parsing data body");
+        };
+        /* We have NESTED list of JSON objects
         [
             [{},{}],
             [{},{}],
         ]
         */ 
-
     } catch (err) {
         console.log(err);
         res.status(500).send('Error getting object from S3 getObject()');
-    }
-   
+    };
 });
 
+//Call the generic URL to get the "KEY"s
 app.get("/gen", async(req:Request, res:Response) => {
     try{
-
         const params = {
             Bucket: "gk-heimdall-logs",
-          };
-        
+        };
+
         const data = await s3.listObjectsV2(params).promise();
-        console.log(data.Contents?.toString());
-        console.log(typeof({data}.data.Contents));
-        console.log(typeof(data));
-        
         res.status(200).send({data}.data.Contents);
         /* List of json object
         [{},{},{}]
         */
-
     } catch (err) {
         console.log(err);
-        res.status(500).send('Error getting object from S3 getObject()');
+        res.status(500).send('Error getting object from S3 getListObjectV2()');
     }
 });
 
 app.listen(port, () => {
-    console.log(`now listening on port ${port}`)
-})
+    console.log(`now listening on port ${port}`);
+});

@@ -26,9 +26,11 @@ aws_sdk_1.default.config.update({
     region: 'us-east-1',
 });
 const s3 = new aws_sdk_1.default.S3();
+//Home route
 app.get("/", (req, res) => {
-    res.send("Welcome to the Intern server");
+    res.send("Welcome to the intern server!");
 });
+//Get specific data from "Key"
 app.get("/item/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -42,9 +44,10 @@ app.get("/item/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* (
             res.send(jsonObject);
         }
         else {
-            res.send("Error from AWS");
+            res.send("Error parsing data body");
         }
-        /* We have nested list of JSON objects
+        ;
+        /* We have NESTED list of JSON objects
         [
             [{},{}],
             [{},{}],
@@ -55,17 +58,15 @@ app.get("/item/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* (
         console.log(err);
         res.status(500).send('Error getting object from S3 getObject()');
     }
+    ;
 }));
+//Call the generic URL to get the "KEY"s
 app.get("/gen", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
     try {
         const params = {
             Bucket: "gk-heimdall-logs",
         };
         const data = yield s3.listObjectsV2(params).promise();
-        console.log((_b = data.Contents) === null || _b === void 0 ? void 0 : _b.toString());
-        console.log(typeof ({ data }.data.Contents));
-        console.log(typeof (data));
         res.status(200).send({ data }.data.Contents);
         /* List of json object
         [{},{},{}]
@@ -73,7 +74,7 @@ app.get("/gen", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         console.log(err);
-        res.status(500).send('Error getting object from S3 getObject()');
+        res.status(500).send('Error getting object from S3 getListObjectV2()');
     }
 }));
 app.listen(port, () => {
