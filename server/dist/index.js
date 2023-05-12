@@ -12,46 +12,70 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const dotenv_1 = __importDefault(require("dotenv"));
+const aws_sdk_1 = __importDefault(require("aws-sdk"));
 const express_1 = __importDefault(require("express"));
-const generic_1 = require("./generic");
 const port = 8080;
 const app = (0, express_1.default)();
-app.get('/favicon.ico', (req, res) => res.status(204));
-app.get("/", (req, res) => {
-    res.send("hello from express!!!!!!!hello");
+dotenv_1.default.config();
+const accessKey = process.env.ACCESS_KEY;
+const secretKey = process.env.SECRET_KEY;
+aws_sdk_1.default.config.update({
+    accessKeyId: accessKey,
+    secretAccessKey: secretKey,
+    region: 'us-east-1',
 });
-app.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const s3 = new aws_sdk_1.default.S3();
+app.get("/", (req, res) => {
+    res.send("Welcome to the Intern server");
+});
+app.get("/item/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const content = yield (0, generic_1.getData)(req.params.id);
-        const jsonObject = JSON.parse(content);
+        const params = {
+            Bucket: 'gk-heimdall-logs',
+            Key: req.params.id,
+        };
+        const data = yield s3.getObject(params).promise();
+        if (data.Body) {
+            const jsonObject = JSON.parse((_a = data.Body) === null || _a === void 0 ? void 0 : _a.toString());
+            res.send(jsonObject);
+        }
+        else {
+            res.send("Error from AWS");
+        }
         /* We have nested list of JSON objects
         [
             [{},{}],
             [{},{}],
         ]
         */
-        res.send(jsonObject);
     }
     catch (err) {
         console.log(err);
         res.status(500).send('Error getting object from S3 getObject()');
     }
 }));
-app.get("/gen", (req, res) => {
-    res.send("hello!");
-});
-// app.get("/genlist", async(req:Request, res:Response) => {
-//     // res.send("hello");
-//     try{
-//         console.log("here 111");
-//         const content = await getList();
-//         console.log(content);
-//         res.send("hello")
-//     } catch (err){
-//         console.log(err);
-//         res.status(500).send('Error getting object from S3 ListObjectV2()');
-//     }
-// });
+app.get("/gen", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    try {
+        const params = {
+            Bucket: "gk-heimdall-logs",
+        };
+        const data = yield s3.listObjectsV2(params).promise();
+        console.log((_b = data.Contents) === null || _b === void 0 ? void 0 : _b.toString());
+        console.log(typeof ({ data }.data.Contents));
+        console.log(typeof (data));
+        res.status(200).send({ data }.data.Contents);
+        /* List of json object
+        [{},{},{}]
+        */
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send('Error getting object from S3 getObject()');
+    }
+}));
 app.listen(port, () => {
     console.log(`now listening on port ${port}`);
 });
