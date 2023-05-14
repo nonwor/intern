@@ -19,11 +19,12 @@
             <tr>
                 <th>epname</th>
                 <th>cname 
-                    <select [(ngModel)]="selectedValue">
+                    <select [(ngModel)]="selectedValueData">
                     <option value="">All</option>
                     <option *ngFor="let value of uniqueCustomerNameDataError" [value]="value">{{value}}</option>
                   </select>
                 </th>
+                <th>errType</th>
                 <th>errmsg</th>
                 <th>cwurl</th>
                 <th>schedguid</th>
@@ -31,13 +32,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let data of dataError | filterBy:'cname':selectedValue">
+            <tr *ngFor="let data of dataError | filterBy:'cname':selectedValueData">
                 <td>{{data.epname}}</td>
                 <td>{{data.cname}}</td>
+                <td>{{data.errType}}</td>
                 <td>{{data.errmsg}}</td>
                 <td>{{data.cwurl}}</td>
                 <td>{{data.schedguid}}</td>
                 <td>{{data.now}}</td>
+                <td> <button (click)="doSomethignWithData(data)">Send-Info</button> </td>
             </tr>
         </tbody>
     </table>
@@ -48,7 +51,13 @@
         <thead>
             <tr>
                 <th>epname</th>
-                <th>cname</th>
+                <th>cname
+                    <select [(ngModel)]="selectedValueTiming">
+                        <option value="">All</option>
+                        <option *ngFor="let value of uniqueCustomerNameTimingError" [value]="value">{{value}}</option>
+                    </select>
+                </th>
+                <th>errType</th>
                 <th>errmsg</th>
                 <th>cwurl</th>
                 <th>schedguid</th>
@@ -59,9 +68,10 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let data of timingError">
+            <tr *ngFor="let data of timingError| filterBy:'cname':selectedValueTiming">
                 <td>{{data.epname}}</td>
                 <td>{{data.cname}}</td>
+                <td>{{data.errType}}</td>
                 <td>{{data.errmsg}}</td>
                 <td>{{data.cwurl}}</td>
                 <td>{{data.schedguid}}</td>
@@ -69,6 +79,7 @@
                 <td>{{data.now}}</td>
                 <td>{{data.paulPulledDateUTC}}</td>
                 <td>{{data.scheduleExpectedTimeUTC}}</td>
+                <td> <button (click)="doSomethignWithData(data)">Send-Info</button> </td>
             </tr>
         </tbody>
     </table>

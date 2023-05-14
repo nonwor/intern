@@ -24,7 +24,9 @@ export class ResultDataComponent {
   
   result:any;
 
+  //Init unique var for filter select
   uniqueCustomerNameDataError: string[] =[];
+  uniqueCustomerNameTimingError: string[] = [];
   
   ngOnChanges(changes: SimpleChanges) {
     if (changes['message'] && !changes['message'].firstChange) {
@@ -76,6 +78,7 @@ export class ResultDataComponent {
       console.log(this.timingError[0])
 
       this.uniqueCustomerNameDataError = [...new Set(this.dataError.map(item=>item.cname))]
+      this.uniqueCustomerNameTimingError = [...new Set(this.timingError.map(item=>item.cname))]
     })
 
   }
@@ -87,8 +90,15 @@ export class ResultDataComponent {
   }
 
   //Attemp to filter by customer name here
-  selectedValue:string = "";
-  
+  selectedValueData:string = "";
+  selectedValueTiming:string = "";
 
+  // focusedObject?:TimingErr;
+
+  doSomethignWithData(data:DataErr){
+    console.log("We have extract out this particular item here");
+    console.log(data);
+    // this.focusedObject = data;
+  }
   
 }
