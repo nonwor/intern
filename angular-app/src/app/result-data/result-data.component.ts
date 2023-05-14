@@ -17,7 +17,7 @@ export class ResultDataComponent {
   constructor(private http: HttpClient) { }
 
   dataError: DataErr[] = [];
-  timeingError: TimingErr[] = [];
+  timingError: TimingErr[] = [];
   
   result:any;
   
@@ -55,17 +55,24 @@ export class ResultDataComponent {
             j.now = moment.utc(j.now);
             j.paulPulledDateUTC = moment.utc(j.paulPulledDateUTC);
             j.scheduleExpectedTimeUTC = moment.utc(j.scheduleExpectedTimeUTC);
-            this.timeingError.push(j);
+            this.timingError.push(j);
           }
         }
       }
       //Check for all data?
-      console.log(this.timeingError.length)
+      console.log(this.timingError.length)
       console.log(this.dataError.length)
       console.log(this.dataError[0])
-      console.log(this.timeingError[0])
+      console.log(this.timingError[0])
     })
 
+  }
+  
+  //Select which Error log (Data = 0 or Timing = 1, default to 0) to display
+  whichError:number = 0;
+
+  onToggleChange(event:any) {
+    this.whichError = event.value;
   }
   
 }

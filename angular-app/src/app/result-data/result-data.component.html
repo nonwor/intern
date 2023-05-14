@@ -3,20 +3,33 @@
     <h3>Looking at record: {{message}}</h3>
     <!-- Add toggle function here -->
     <!-- https://www.geeksforgeeks.org/angular-material-button-toggle/ -->
+    
 </div>
 
 <!-- This is to save API calls -->
 <div>Get Items
     <button (click)="getMassiveData()">Get</button>
+
+    <!-- <mat-slide-toggle [checked]="isChecked" (change)="onToggleChange()">
+        <span matSlideToggleLabel>SQL Data Error</span>
+        
+        <span matSlideToggleLabel>SQL Timing Error</span>
+      </mat-slide-toggle> -->
+    <div>
+        <mat-button-toggle-group value =0 (change)="onToggleChange($event)">
+            <mat-button-toggle value=0>SQL Data Error</mat-button-toggle>
+            <mat-button-toggle value=1>SQL Timing Error </mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+
 </div>
 
-<div>
+<div *ngIf="whichError == 0" >
     <table class = "dataTable" border=1 frame=hsides rules=rows>
         <thead>
             <tr>
                 <th>epname</th>
                 <th>cname</th>
-                <th>errType</th>
                 <th>errmsg</th>
                 <th>cwurl</th>
                 <th>schedguid</th>
@@ -27,13 +40,42 @@
             <tr *ngFor="let data of dataError">
                 <td>{{data.epname}}</td>
                 <td>{{data.cname}}</td>
-                <td>{{data.errType}}</td>
                 <td>{{data.errmsg}}</td>
                 <td>{{data.cwurl}}</td>
                 <td>{{data.schedguid}}</td>
                 <td>{{data.now}}</td>
             </tr>
         </tbody>
+    </table>
+</div>
 
+<div *ngIf="whichError == 1" >
+    <table class = "dataTable" border=1 frame=hsides rules=rows>
+        <thead>
+            <tr>
+                <th>epname</th>
+                <th>cname</th>
+                <th>errmsg</th>
+                <th>cwurl</th>
+                <th>schedguid</th>
+                <th>awsCronExpression</th>
+                <th>now</th>
+                <th>paulPulledDateUTC</th>
+                <th>scheduleExpectedTimeUTC</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of timingError">
+                <td>{{data.epname}}</td>
+                <td>{{data.cname}}</td>
+                <td>{{data.errmsg}}</td>
+                <td>{{data.cwurl}}</td>
+                <td>{{data.schedguid}}</td>
+                <td>{{data.awsCronExpression}}</td>
+                <td>{{data.now}}</td>
+                <td>{{data.paulPulledDateUTC}}</td>
+                <td>{{data.scheduleExpectedTimeUTC}}</td>
+            </tr>
+        </tbody>
     </table>
 </div>
