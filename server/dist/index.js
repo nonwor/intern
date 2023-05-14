@@ -15,8 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const aws_sdk_1 = __importDefault(require("aws-sdk"));
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const port = 8080;
 const app = (0, express_1.default)();
+const corsOption = {
+    origin: "http://localhost:4200"
+};
+app.use((0, cors_1.default)(corsOption));
 dotenv_1.default.config();
 const accessKey = process.env.ACCESS_KEY;
 const secretKey = process.env.SECRET_KEY;
@@ -28,7 +33,8 @@ aws_sdk_1.default.config.update({
 const s3 = new aws_sdk_1.default.S3();
 //Home route
 app.get("/", (req, res) => {
-    res.send("Welcome to the intern server!");
+    const data = { message: "hello for server!" };
+    res.json(data);
 });
 //Get specific data from "Key"
 app.get("/item/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {

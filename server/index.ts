@@ -2,10 +2,15 @@
 import dotenv from "dotenv";
 import AWS from "aws-sdk";
 import express, {Express, Request, Response} from "express";
+import cors from 'cors';
 
 const port = 8080;
 const app:Express = express();
 
+const corsOption ={
+    origin: "http://localhost:4200"
+};
+app.use(cors(corsOption));
 
 dotenv.config();
 
@@ -22,7 +27,8 @@ const s3 = new AWS.S3();
 
 //Home route
 app.get("/", (req:Request, res:Response) => {
-    res.send("Welcome to the intern server!");
+    const data = {message: "hello for server!"}
+    res.json(data);
 });
 
 //Get specific data from "Key"

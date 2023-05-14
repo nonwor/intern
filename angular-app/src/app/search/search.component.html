@@ -1,0 +1,26 @@
+<div>
+    <p>Input DB name for lookup</p>
+    <input type="text"  placeholder="gk-heimdall-logs" [(ngModel)]="searchTerm">
+    <button (click)="search()">Search</button>
+</div>
+
+<div *ngIf="!data">
+    <p>Please enter data and wait</p>
+</div>
+
+
+<div *ngIf="data">
+    <h3>Avaliable Keys</h3>
+    <ul class="keys">
+    <li *ngFor="let item of data">
+        <button [class.selected]="item === selectedItem" type="button" (click)="onSelect(item)">
+        <span class="each-key">{{item.Key}}</span>
+        </button>
+    </li>
+    </ul>
+</div>
+
+<app-result-data [message]=selectedItem></app-result-data>
+
+
+

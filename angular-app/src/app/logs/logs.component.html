@@ -1,0 +1,44 @@
+<!-- <p>{{log.name |uppercase}} Details</p>
+<div><span>id: </span>{{log.id}}</div>
+<div><span>name: </span>{{log.name}}</div>
+<br/>
+
+<!-- Additional Component -->
+<!-- This is changing the item data in the log component -->
+<!-- <div>
+    <label for="name"> Item name</label>
+    <input id = "name" [(ngModel)]="log.name" plnaceHolder="name">
+</div> -->
+
+
+<h2>My Heroes</h2>
+<ul class="heroes">
+  <li *ngFor="let log of logs">
+    <button [class.selected]="log === selectedItem" type="button" (click)="onSelect(log)">
+      <span class="badge">{{log.id}}</span>
+      <span class="name">{{log.name}}</span>
+    </button>
+  </li>
+</ul>
+
+<div *ngIf="selectedItem">
+    <h2>{{selectedItem.name | uppercase}} Details</h2>
+    <div>id:{{selectedItem.id}}</div>
+
+    <div>
+        <label for="item-name"> Item name:</label>
+        <input id="item-name" [(ngModel)]="selectedItem.name" placeholder="name">
+    </div>
+</div>
+
+<!-- <form action="......">
+    <label for="cars">Choose a car:</label>
+    <select name="cars" id="cars">
+      <option value="volvo">Volvo</option>
+      <option value="saab">Saab</option>
+      <option value="opel">Opel</option>
+      <option value="audi">Audi</option>
+    </select>
+    <br><br>
+    <input type="submit" value="Submit">
+  </form> -->
