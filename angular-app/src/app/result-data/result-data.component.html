@@ -1,12 +1,39 @@
 <!-- <p>Looking at: {{message}}</p> -->
 <div *ngIf="message">
     <h3>Looking at record: {{message}}</h3>
-
-
+    <!-- Add toggle function here -->
+    <!-- https://www.geeksforgeeks.org/angular-material-button-toggle/ -->
 </div>
 
 <!-- This is to save API calls -->
 <div>Get Items
     <button (click)="getMassiveData()">Get</button>
-    
+</div>
+
+<div>
+    <table class = "dataTable" border=1 frame=hsides rules=rows>
+        <thead>
+            <tr>
+                <th>epname</th>
+                <th>cname</th>
+                <th>errType</th>
+                <th>errmsg</th>
+                <th>cwurl</th>
+                <th>schedguid</th>
+                <th>now</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of dataError">
+                <td>{{data.epname}}</td>
+                <td>{{data.cname}}</td>
+                <td>{{data.errType}}</td>
+                <td>{{data.errmsg}}</td>
+                <td>{{data.cwurl}}</td>
+                <td>{{data.schedguid}}</td>
+                <td>{{data.now}}</td>
+            </tr>
+        </tbody>
+
+    </table>
 </div>
