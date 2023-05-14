@@ -10,13 +10,15 @@ import { AppComponent } from './app.component';
 import { LogsComponent } from './logs/logs.component';
 import { SearchComponent } from './search/search.component';
 import { ResultDataComponent } from './result-data/result-data.component';
+import { FilterByPipe } from './filterByCustomerName.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LogsComponent,
     SearchComponent,
-    ResultDataComponent
+    ResultDataComponent,
+    FilterByPipe
   ],
   imports: [
     BrowserModule,

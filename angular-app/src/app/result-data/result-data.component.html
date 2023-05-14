@@ -18,7 +18,12 @@
         <thead>
             <tr>
                 <th>epname</th>
-                <th>cname</th>
+                <th>cname 
+                    <select [(ngModel)]="selectedValue">
+                    <option value="">All</option>
+                    <option *ngFor="let value of uniqueCustomerNameDataError" [value]="value">{{value}}</option>
+                  </select>
+                </th>
                 <th>errmsg</th>
                 <th>cwurl</th>
                 <th>schedguid</th>
@@ -26,7 +31,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let data of dataError">
+            <tr *ngFor="let data of dataError | filterBy:'cname':selectedValue">
                 <td>{{data.epname}}</td>
                 <td>{{data.cname}}</td>
                 <td>{{data.errmsg}}</td>

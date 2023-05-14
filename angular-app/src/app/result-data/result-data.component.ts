@@ -2,17 +2,19 @@ import { Component, Input, SimpleChanges} from '@angular/core';
 import { Store, TimingErr, DataErr } from '../store';
 import { HttpClient, } from '@angular/common/http';
 import * as moment from 'moment';
+import { FilterByPipe } from '../filterByCustomerName.pipe';
 
 @Component({
   selector: 'app-result-data',
   templateUrl: './result-data.component.html',
-  styleUrls: ['./result-data.component.css']
+  styleUrls: ['./result-data.component.css'],
+  providers:[FilterByPipe],
 })
 
 export class ResultDataComponent {
   @Input() message?: string;
 
-  placeHolder:string = "20230509-2346";
+  // placeHolder:string = "20230509-2346";
   apiUrl:string = " ";
   constructor(private http: HttpClient) { }
 
@@ -21,6 +23,8 @@ export class ResultDataComponent {
   itemCount: number = 0;
   
   result:any;
+
+  uniqueCustomerNameDataError: string[] =[];
   
   ngOnChanges(changes: SimpleChanges) {
     if (changes['message'] && !changes['message'].firstChange) {
@@ -70,17 +74,21 @@ export class ResultDataComponent {
       console.log(this.dataError.length)
       console.log(this.dataError[0])
       console.log(this.timingError[0])
+
+      this.uniqueCustomerNameDataError = [...new Set(this.dataError.map(item=>item.cname))]
     })
 
   }
   
   //Select which Error log (Data = 0 or Timing = 1, default to 2) to display
   whichError:number = 2;
-
   onToggleChange(event:any) {
     this.whichError = event.value;
   }
 
-  //Attemp to filter by customers here
+  //Attemp to filter by customer name here
+  selectedValue:string = "";
+  
+
   
 }
