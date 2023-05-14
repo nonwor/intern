@@ -24,9 +24,16 @@ export class ResultDataComponent {
   
   result:any;
 
+  //Error type, 0=Data, 1=Timing, 2 Default not select
+  whichError:number = 2;
+
   //Init unique var for filter select
   uniqueCustomerNameDataError: string[] =[];
   uniqueCustomerNameTimingError: string[] = [];
+
+  //Attemp to filter by customer name here
+  selectedValueData:string = "";
+  selectedValueTiming:string = "";
   
   ngOnChanges(changes: SimpleChanges) {
     if (changes['message'] && !changes['message'].firstChange) {
@@ -36,7 +43,15 @@ export class ResultDataComponent {
 
   doSomething() {
     console.log('Message changed to:', this.message);
-    // Call your function here...
+    //Reset Data on new select "message" from parent
+    this.dataError = [];
+    this.timingError =[];
+    this.itemCount = 0;
+    this.uniqueCustomerNameDataError =[];
+    this.uniqueCustomerNameTimingError=[];
+    this.selectedValueData = "";
+    this.selectedValueTiming = "";
+
     this.getMassiveData()
   }
 
@@ -47,10 +62,7 @@ export class ResultDataComponent {
   }
 
   getMassiveData(){
-    // Reset data
-    this.dataError = [];
-    this.timingError =[];
-    this.itemCount = 0;
+    
     // console.log(this.placeHolder);
     this.execute().subscribe((data:Store[])=>{
       console.log(data);
@@ -84,14 +96,9 @@ export class ResultDataComponent {
   }
   
   //Select which Error log (Data = 0 or Timing = 1, default to 2) to display
-  whichError:number = 2;
   onToggleChange(event:any) {
     this.whichError = event.value;
   }
-
-  //Attemp to filter by customer name here
-  selectedValueData:string = "";
-  selectedValueTiming:string = "";
 
   // focusedObject?:TimingErr;
 
