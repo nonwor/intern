@@ -18,6 +18,7 @@ export class ResultDataComponent {
 
   dataError: DataErr[] = [];
   timingError: TimingErr[] = [];
+  itemCount: number = 0;
   
   result:any;
   
@@ -30,25 +31,29 @@ export class ResultDataComponent {
   doSomething() {
     console.log('Message changed to:', this.message);
     // Call your function here...
+    this.getMassiveData()
   }
 
   execute() {
     // this.apiUrl = 'https://swapi.dev/api/people/' +this.searchTerm;
-    this.apiUrl ='http://localhost:8080/item/'+this.placeHolder;
+    this.apiUrl ='http://localhost:8080/item/'+this.message;
     return this.http.get<Store[]>(this.apiUrl);
   }
 
   getMassiveData(){
-    console.log(this.placeHolder);
+    // Reset data
+    this.dataError = [];
+    this.timingError =[];
+    this.itemCount = 0;
+    // console.log(this.placeHolder);
     this.execute().subscribe((data:Store[])=>{
       console.log(data);
       this.result = data;
       for(const i of this.result){
-        // console.log(i);
         for(const j of i){
-          // console.log(j);
+          this.itemCount ++;
           if(Object.keys(j).length == 7){
-            // j.now = new Date(j.now);
+            //We need to convert time string to date object
             j.now = moment.utc(j.now);
             this.dataError.push(j);
           }else{
@@ -60,6 +65,7 @@ export class ResultDataComponent {
         }
       }
       //Check for all data?
+      console.log(this.itemCount);
       console.log(this.timingError.length)
       console.log(this.dataError.length)
       console.log(this.dataError[0])
@@ -68,11 +74,13 @@ export class ResultDataComponent {
 
   }
   
-  //Select which Error log (Data = 0 or Timing = 1, default to 0) to display
-  whichError:number = 0;
+  //Select which Error log (Data = 0 or Timing = 1, default to 2) to display
+  whichError:number = 2;
 
   onToggleChange(event:any) {
     this.whichError = event.value;
   }
+
+  //Attemp to filter by customers here
   
 }
