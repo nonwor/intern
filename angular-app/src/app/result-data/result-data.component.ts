@@ -42,7 +42,7 @@ export class ResultDataComponent {
   }
 
   doSomething() {
-    console.log('Message changed to:', this.paramList);
+    // console.log('Message changed to:', this.paramList);
     //Reset Data on new select "message" from parent
     this.dataError = [];
     this.timingError =[];
@@ -65,7 +65,6 @@ export class ResultDataComponent {
     
     // console.log(this.placeHolder);
     this.execute().subscribe((data:Store[])=>{
-      console.log(data);
       this.result = data;
       for(const i of this.result){
         for(const j of i){
@@ -83,11 +82,13 @@ export class ResultDataComponent {
         }
       }
       //Check for all data?
-      console.log(this.itemCount);
-      console.log(this.timingError.length)
-      console.log(this.dataError.length)
-      console.log(this.dataError[0])
-      console.log(this.timingError[0])
+      
+      if(this.itemCount != (this.timingError.length + this.dataError.length)){
+        console.error("Records does not match")
+        console.error(this.itemCount);
+        console.error(this.timingError.length)
+        console.error(this.dataError.length)
+      }
 
       this.uniqueCustomerNameDataError = [...new Set(this.dataError.map(item=>item.cname))]
       this.uniqueCustomerNameTimingError = [...new Set(this.timingError.map(item=>item.cname))]
@@ -98,13 +99,13 @@ export class ResultDataComponent {
   //Select which Error log (Data = 0 or Timing = 1, default to 2) to display
   onToggleChange(event:any) {
     this.whichError = event.value;
-    console.log(this.paramList)
   }
 
   // focusedObject?:TimingErr;
 
   doSomethignWithData(data:DataErr){
     console.log("We have extract out this particular item here");
+    console.log(this.paramList)
     console.log(data);
     // this.focusedObject = data;
   }

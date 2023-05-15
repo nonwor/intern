@@ -37,7 +37,6 @@ export class SearchComponent {
   selectedItem?:string;
   onSelect(log:Store): void{
     this.selectedItem = log.Key;
-    console.log(this.selectedItem);
     this.paramList = [];
     this.paramList.push(this.searchTerm);
     this.paramList.push(this.selectedItem);
