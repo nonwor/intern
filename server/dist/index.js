@@ -37,11 +37,11 @@ app.get("/", (req, res) => {
     res.json(data);
 });
 //Get specific data from "Key"
-app.get("/item/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/item/:db/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const params = {
-            Bucket: 'gk-heimdall-logs',
+            Bucket: req.params.db,
             Key: req.params.id,
         };
         const data = yield s3.getObject(params).promise();
@@ -67,10 +67,10 @@ app.get("/item/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* (
     ;
 }));
 //Call the generic URL to get the "KEY"s
-app.get("/gen", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/db/:name", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const params = {
-            Bucket: "gk-heimdall-logs",
+            Bucket: req.params.name,
         };
         const data = yield s3.listObjectsV2(params).promise();
         res.status(200).send({ data }.data.Contents);

@@ -32,10 +32,10 @@ app.get("/", (req:Request, res:Response) => {
 });
 
 //Get specific data from "Key"
-app.get("/item/:id", async(req:Request, res:Response) => {
+app.get("/item/:db/:id", async(req:Request, res:Response) => {
     try{
         const params ={
-            Bucket: 'gk-heimdall-logs',
+            Bucket: req.params.db,
             Key: req.params.id,
         };
 
@@ -60,10 +60,10 @@ app.get("/item/:id", async(req:Request, res:Response) => {
 });
 
 //Call the generic URL to get the "KEY"s
-app.get("/gen", async(req:Request, res:Response) => {
+app.get("/db/:name", async(req:Request, res:Response) => {
     try{
         const params = {
-            Bucket: "gk-heimdall-logs",
+            Bucket: req.params.name,
         };
 
         const data = await s3.listObjectsV2(params).promise();

@@ -12,7 +12,7 @@ import { FilterByPipe } from '../filterByCustomerName.pipe';
 })
 
 export class ResultDataComponent {
-  @Input() message?: string;
+  @Input() paramList: string[] =[];
 
   // placeHolder:string = "20230509-2346";
   apiUrl:string = " ";
@@ -36,13 +36,13 @@ export class ResultDataComponent {
   selectedValueTiming:string = "";
   
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['message'] && !changes['message'].firstChange) {
+    if (changes['paramList'] && !changes['paramList'].firstChange) {
       this.doSomething();
     }
   }
 
   doSomething() {
-    console.log('Message changed to:', this.message);
+    console.log('Message changed to:', this.paramList);
     //Reset Data on new select "message" from parent
     this.dataError = [];
     this.timingError =[];
@@ -51,13 +51,13 @@ export class ResultDataComponent {
     this.uniqueCustomerNameTimingError=[];
     this.selectedValueData = "";
     this.selectedValueTiming = "";
-
+    
     this.getMassiveData()
   }
 
   execute() {
     // this.apiUrl = 'https://swapi.dev/api/people/' +this.searchTerm;
-    this.apiUrl ='http://localhost:8080/item/'+this.message;
+    this.apiUrl ='http://localhost:8080/item/'+ this.paramList[0] +'/'+this.paramList[1];
     return this.http.get<Store[]>(this.apiUrl);
   }
 
@@ -98,6 +98,7 @@ export class ResultDataComponent {
   //Select which Error log (Data = 0 or Timing = 1, default to 2) to display
   onToggleChange(event:any) {
     this.whichError = event.value;
+    console.log(this.paramList)
   }
 
   // focusedObject?:TimingErr;

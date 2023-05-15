@@ -1,7 +1,7 @@
 <div>
     <p>Input DB name for lookup</p>
     <input type="text"  placeholder="gk-heimdall-logs" [(ngModel)]="searchTerm">
-    <button (click)="search()">Search</button>
+    <button class="search-button" (click)="search()">Search</button>
 </div>
 
 <div *ngIf="!data">
@@ -19,7 +19,7 @@
     </ul>
 </div>
 
-<app-result-data [message]=selectedItem></app-result-data>
+<app-result-data [paramList]="paramList"></app-result-data>
 
 
 
